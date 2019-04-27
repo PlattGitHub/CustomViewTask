@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ColorfulRadioButton">
+        <attr name="color" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="PaintWidget">
+        <attr name="maxWidth" format="integer" />
+        <attr name="defaultColorPosition" format="integer" />
+        <attr name="firstItemColor" format="enum">
+            <enum name="BlueViolet" value="0xFF8a2be2"/>
+            <enum name="CadetBlue" value="0xFF53868b"/>
+            <enum name="DarkSeaGreen" value="0xFF698b69"/>
+        </attr>
+    </declare-styleable>
+</resources>

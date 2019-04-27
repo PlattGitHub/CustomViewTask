@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="214dp"
+    android:layout_height="156dp"
+    android:background="@color/backgroundWidget"
+    android:orientation="vertical"
+    tools:parentTag="android.widget.LinearLayout">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:gravity="center"
+            android:text="@string/width"
+            android:textSize="18sp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/widthTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="16dp"
+            android:gravity="end|center_vertical"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="2" />
+
+    </LinearLayout>
+
+
+    <androidx.appcompat.widget.AppCompatSeekBar
+        android:id="@+id/seekBarWidget"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_weight="1"
+        android:progressDrawable="@drawable/seekbar_drawable"
+        android:splitTrack="false"
+        android:thumb="@drawable/seekbar_thumb" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_weight="1"
+        android:gravity="start|center_vertical"
+        android:text="@string/colors"
+        android:textSize="18sp" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.example.customviewtask.ColorfulRadioButton
+            android:id="@+id/first_rb"
+            android:layout_width="@dimen/radio_button_size"
+            android:layout_height="@dimen/radio_button_size"
+            android:layout_marginStart="@dimen/radio_button_margin"
+            android:layout_marginEnd="@dimen/radio_button_margin" />
+
+        <com.example.customviewtask.ColorfulRadioButton
+            android:id="@+id/second_rb"
+            android:layout_width="@dimen/radio_button_size"
+            android:layout_height="@dimen/radio_button_size"
+            android:layout_marginStart="@dimen/radio_button_margin"
+            android:layout_marginEnd="@dimen/radio_button_margin"
+            app:color="@android:color/holo_red_light" />
+
+        <com.example.customviewtask.ColorfulRadioButton
+            android:id="@+id/third_rb"
+            android:layout_width="@dimen/radio_button_size"
+            android:layout_height="@dimen/radio_button_size"
+            android:layout_marginStart="@dimen/radio_button_margin"
+            android:layout_marginEnd="@dimen/radio_button_margin"
+            app:color="@android:color/holo_green_light" />
+
+        <com.example.customviewtask.ColorfulRadioButton
+            android:id="@+id/fourth_rb"
+            android:layout_width="@dimen/radio_button_size"
+            android:layout_height="@dimen/radio_button_size"
+            android:layout_marginStart="@dimen/radio_button_margin"
+            android:layout_marginEnd="@dimen/radio_button_margin"
+            app:color="@android:color/holo_blue_light" />
+    </RadioGroup>
+</LinearLayout>
