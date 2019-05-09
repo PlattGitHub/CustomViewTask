@@ -18,14 +18,8 @@ class ColorfulRadioButton(context: Context?, attrs: AttributeSet?) :
     var circleColor: Int = Color.BLACK
         set(value) {
             field = value
-            strokeColor = Color.argb(
-                (Color.alpha(value) * 0.4).toInt(),
-                Color.red(value),
-                Color.green(value),
-                Color.blue(value)
-            )
+            generateStrokeColor(value)
         }
-
     var strokeColor = Color.argb(
         (Color.alpha(Color.BLACK) * 0.4).toInt(),
         Color.red(Color.BLACK),
@@ -34,12 +28,7 @@ class ColorfulRadioButton(context: Context?, attrs: AttributeSet?) :
     )
         private set
 
-    private val accentColor: Int by lazy { getThemeAccentColor(context) }
-
     private val paintCircle = Paint().apply {
-        style = Paint.Style.FILL
-    }
-    private val paintStroke = Paint().apply {
         style = Paint.Style.FILL
     }
 
@@ -48,27 +37,36 @@ class ColorfulRadioButton(context: Context?, attrs: AttributeSet?) :
             context?.obtainStyledAttributes(attrs, R.styleable.ColorfulRadioButton)
         circleColor = typedArrayAttrs?.getColor(
             R.styleable.ColorfulRadioButton_color,
-            accentColor
+            getThemeAccentColor(context)
         ) ?: Color.BLACK
         typedArrayAttrs?.recycle()
     }
 
     override fun onDraw(canvas: Canvas?) {
-        paintCircle.color = circleColor
-        paintStroke.color = strokeColor
+        paintCircle.color = strokeColor
         if (isChecked) {
             canvas?.drawCircle(
                 (width / 2).toFloat(),
                 (height / 2).toFloat(),
                 (width / 2).toFloat(),
-                paintStroke
+                paintCircle
             )
         }
+        paintCircle.color = circleColor
         canvas?.drawCircle(
             (width / 2).toFloat(),
             (height / 2).toFloat(),
             (width / 3).toFloat(),
             paintCircle
+        )
+    }
+
+    private fun generateStrokeColor(value: Int) {
+        strokeColor = Color.argb(
+            (Color.alpha(value) * 0.4).toInt(),
+            Color.red(value),
+            Color.green(value),
+            Color.blue(value)
         )
     }
 }

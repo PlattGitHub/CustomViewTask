@@ -6,7 +6,6 @@ import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.ScaleDrawable
 import android.util.AttributeSet
-import android.view.View
 import android.widget.LinearLayout
 import android.widget.RadioGroup
 import android.widget.SeekBar
@@ -29,7 +28,7 @@ class PaintWidget @JvmOverloads constructor(
     var maxWidth = 0
         set(value) {
             field = value
-            seekBarWidget.max = value
+            applyMaxWidth(value)
         }
 
     var defaultColorPosition = 0
@@ -46,28 +45,18 @@ class PaintWidget @JvmOverloads constructor(
     var firstItemColor = 0
         set(value) {
             field = value
-            val radioButton = radioGroup[0] as ColorfulRadioButton
-            radioButton.circleColor = value
-            if (radioButton.isChecked) {
-                changeSeekBarColor(
-                    radioButton.circleColor,
-                    radioButton.strokeColor
-                )
-            }
+            applyFirstItemColor(value)
         }
 
-    var onPaintWidgetChangeListener: OnPaintWidgetChangeListener? = null
-    var view: View? = null
+    var onPaintWidgetChangeListener: OnPaintWidgetChangeListener =
+        context as OnPaintWidgetChangeListener
 
     private val layerDrawable by lazy { seekBarWidget.progressDrawable as LayerDrawable }
     private val rightPart by lazy { layerDrawable.findDrawableByLayerId(R.id.seekbar_right_part) as GradientDrawable }
     private val leftPart by lazy { layerDrawable.findDrawableByLayerId(R.id.seekbar_left_part) as ScaleDrawable }
 
     init {
-        view = View.inflate(context, R.layout.paint_widget, this)
-
-        seekBarWidget.setOnSeekBarChangeListener(SeekBarChangeListener())
-        radioGroup.setOnCheckedChangeListener(RadioGroupCheckedListener())
+        inflate(context, R.layout.paint_widget, this)
 
         val typedArrayAttrs = context.obtainStyledAttributes(attrs, R.styleable.PaintWidget)
         maxWidth = typedArrayAttrs.getInteger(R.styleable.PaintWidget_maxWidth, 10)
@@ -76,13 +65,16 @@ class PaintWidget @JvmOverloads constructor(
         firstItemColor =
             typedArrayAttrs.getColor(R.styleable.PaintWidget_firstItemColor, Color.BLACK)
         typedArrayAttrs?.recycle()
+
+        seekBarWidget.setOnSeekBarChangeListener(SeekBarChangeListener())
+        radioGroup.setOnCheckedChangeListener(RadioGroupCheckedListener())
     }
 
 
     private inner class SeekBarChangeListener : SeekBar.OnSeekBarChangeListener {
         override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
             widthTextView.text = progress.toString()
-            onPaintWidgetChangeListener?.onWidthChange(progress)
+            onPaintWidgetChangeListener.onWidthChanged(progress)
         }
 
         override fun onStartTrackingTouch(seekBar: SeekBar?) {
@@ -94,12 +86,12 @@ class PaintWidget @JvmOverloads constructor(
 
     private inner class RadioGroupCheckedListener : RadioGroup.OnCheckedChangeListener {
         override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
-            val checkedButton = view?.findViewById<ColorfulRadioButton>(checkedId)
+            val checkedButton = findViewById<ColorfulRadioButton>(checkedId)
             val leftColor = checkedButton?.circleColor
             val rightColor = checkedButton?.strokeColor
             changeSeekBarColor(leftColor, rightColor)
             leftColor?.let {
-                onPaintWidgetChangeListener?.onColorChange(it)
+                onPaintWidgetChangeListener.onColorChanged(it)
             }
         }
     }
@@ -115,8 +107,28 @@ class PaintWidget @JvmOverloads constructor(
         changeSeekBarColor(radioButton.circleColor, radioButton.strokeColor)
     }
 
+    private fun applyMaxWidth(value: Int) {
+        seekBarWidget.max = value
+    }
+
+    private fun applyFirstItemColor(value: Int) {
+        val radioButton = radioGroup[0] as ColorfulRadioButton
+        radioButton.circleColor = value
+        if (radioButton.isChecked) {
+            changeSeekBarColor(
+                radioButton.circleColor,
+                radioButton.strokeColor
+            )
+        }
+    }
+
     interface OnPaintWidgetChangeListener {
-        fun onWidthChange(widthValue: Int)
-        fun onColorChange(colorValue: Int)
+        fun onWidthChanged(widthValue: Int)
+        fun onColorChanged(colorValue: Int)
+    }
+
+    companion object {
+        const val DEFAULT_COLOR_POSITION = 3
+        const val MAX_WIDTH = 5
     }
 }

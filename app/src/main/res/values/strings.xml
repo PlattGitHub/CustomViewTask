@@ -3,4 +3,7 @@
     <string name="show_paintwidget">Show PaintWidget</string>
     <string name="width">Width:</string>
     <string name="colors">Colors:</string>
+    <string name="width_changed">Width has changed. Value is %1$s</string>
+    <string name="color_changed">Color has changed. Value is %1$s</string>
+    <string name="color_format">#%06X</string>
 </resources>

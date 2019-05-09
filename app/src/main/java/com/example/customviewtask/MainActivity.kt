@@ -21,19 +21,20 @@ class MainActivity : AppCompatActivity(), PaintWidget.OnPaintWidgetChangeListene
         showPaintWidgetSwitch.setOnCheckedChangeListener { _, isChecked ->
             paintWidget.isVisible = isChecked
         }
-
-        //0..3
-        paintWidget.defaultColorPosition = 3
-        paintWidget.maxWidth = 5
-        paintWidget.onPaintWidgetChangeListener = this
-
+        paintWidget.defaultColorPosition = PaintWidget.DEFAULT_COLOR_POSITION
+        paintWidget.maxWidth = PaintWidget.MAX_WIDTH
     }
 
-    override fun onWidthChange(widthValue: Int) {
-        toast("Width has changed. Value is $widthValue")
+    override fun onWidthChanged(widthValue: Int) {
+        toast(String.format(getString(R.string.width_changed), widthValue))
     }
 
-    override fun onColorChange(colorValue: Int) {
-        toast("Color has changed. Value is ${String.format("#%06X", (colorValue))}")
+    override fun onColorChanged(colorValue: Int) {
+        toast(
+            String.format(
+                getString(R.string.color_changed),
+                String.format(getString(R.string.color_format), colorValue)
+            )
+        )
     }
 }
