@@ -26,27 +26,13 @@ class PaintWidget @JvmOverloads constructor(
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
     var maxWidth = 0
-        set(value) {
-            field = value
-            applyMaxWidth(value)
-        }
+        private set
 
     var defaultColorPosition = 0
-        set(value) {
-            if (radioGroup.size > value) {
-                field = value
-                setRadioButtonChecked(value)
-            } else {
-                field = 0
-                setRadioButtonChecked(0)
-            }
-        }
+        private set
 
     var firstItemColor = 0
-        set(value) {
-            field = value
-            applyFirstItemColor(value)
-        }
+        private set
 
     var onPaintWidgetChangeListener: OnPaintWidgetChangeListener =
         context as OnPaintWidgetChangeListener
@@ -66,8 +52,15 @@ class PaintWidget @JvmOverloads constructor(
             typedArrayAttrs.getColor(R.styleable.PaintWidget_firstItemColor, Color.BLACK)
         typedArrayAttrs?.recycle()
 
+        setDefaultColorPosition(defaultColorPosition)
+        setFirstItemColor(firstItemColor)
+        setMaxWidth(maxWidth)
+
         seekBarWidget.setOnSeekBarChangeListener(SeekBarChangeListener())
         radioGroup.setOnCheckedChangeListener(RadioGroupCheckedListener())
+
+        /*setDefaultColorPosition(DEFAULT_COLOR_POSITION)
+        setMaxWidth(MAX_WIDTH)*/
     }
 
 
@@ -107,13 +100,25 @@ class PaintWidget @JvmOverloads constructor(
         changeSeekBarColor(radioButton.circleColor, radioButton.strokeColor)
     }
 
-    private fun applyMaxWidth(value: Int) {
+    fun setMaxWidth(value: Int) {
+        maxWidth = value
         seekBarWidget.max = value
     }
 
-    private fun applyFirstItemColor(value: Int) {
+    fun setDefaultColorPosition(value: Int) {
+        if (radioGroup.size > value) {
+            defaultColorPosition = value
+            setRadioButtonChecked(value)
+        } else {
+            defaultColorPosition = 0
+            setRadioButtonChecked(0)
+        }
+    }
+
+    fun setFirstItemColor(value: Int) {
+        firstItemColor = value
         val radioButton = radioGroup[0] as ColorfulRadioButton
-        radioButton.circleColor = value
+        radioButton.setButtonColors(value)
         if (radioButton.isChecked) {
             changeSeekBarColor(
                 radioButton.circleColor,

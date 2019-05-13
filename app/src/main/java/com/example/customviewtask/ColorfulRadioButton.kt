@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
+import androidx.annotation.ColorRes
 import androidx.appcompat.widget.AppCompatRadioButton
 
 /**
@@ -16,10 +17,8 @@ class ColorfulRadioButton(context: Context?, attrs: AttributeSet?) :
     AppCompatRadioButton(context, attrs) {
 
     var circleColor: Int = Color.BLACK
-        set(value) {
-            field = value
-            generateStrokeColor(value)
-        }
+        private set
+
     var strokeColor = Color.argb(
         (Color.alpha(Color.BLACK) * 0.4).toInt(),
         Color.red(Color.BLACK),
@@ -39,6 +38,7 @@ class ColorfulRadioButton(context: Context?, attrs: AttributeSet?) :
             R.styleable.ColorfulRadioButton_color,
             getThemeAccentColor(context)
         ) ?: Color.BLACK
+        setButtonColors(circleColor)
         typedArrayAttrs?.recycle()
     }
 
@@ -68,5 +68,10 @@ class ColorfulRadioButton(context: Context?, attrs: AttributeSet?) :
             Color.green(value),
             Color.blue(value)
         )
+    }
+
+    fun setButtonColors(@ColorRes color: Int) {
+        circleColor = color
+        generateStrokeColor(color)
     }
 }

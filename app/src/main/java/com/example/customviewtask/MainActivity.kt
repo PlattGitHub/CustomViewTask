@@ -21,8 +21,6 @@ class MainActivity : AppCompatActivity(), PaintWidget.OnPaintWidgetChangeListene
         showPaintWidgetSwitch.setOnCheckedChangeListener { _, isChecked ->
             paintWidget.isVisible = isChecked
         }
-        paintWidget.defaultColorPosition = PaintWidget.DEFAULT_COLOR_POSITION
-        paintWidget.maxWidth = PaintWidget.MAX_WIDTH
     }
 
     override fun onWidthChanged(widthValue: Int) {
